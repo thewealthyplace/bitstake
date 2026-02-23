@@ -1,0 +1,37 @@
+[project]
+name = "bitstake"
+requirements = []
+authors = []
+telemetry = false
+
+[contracts.bitstake-pool-registry]
+path = "contracts/bitstake-pool-registry.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-pool-deposits]
+path = "contracts/bitstake-pool-deposits.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-lbstx]
+path = "contracts/bitstake-lbstx.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-bbstx]
+path = "contracts/bitstake-bbstx.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-mbstx]
+path = "contracts/bitstake-mbstx.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-rewards]
+path = "contracts/bitstake-rewards.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[[deployment_plan.genesis]]

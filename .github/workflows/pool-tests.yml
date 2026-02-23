@@ -1,0 +1,57 @@
+name: Pool Contract Tests
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  clarinet-test:
+    name: Clarinet Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Clarinet
+        run: |
+          curl -L https://github.com/hirosystems/clarinet/releases/latest/download/clarinet-linux-x64-glibc.tar.gz \
+            | tar -xz -C /usr/local/bin
+
+      - name: Run Clarinet checks
+        run: clarinet check
+
+      - name: Run contract tests
+        run: clarinet test --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: coverage.lcov
+          fail_ci_if_error: false
+
+  typescript-test:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run TypeScript tests
+        working-directory: frontend
+        run: npm test -- --reporter=verbose
+
+      - name: Type check
+        working-directory: frontend
+        run: npx tsc --noEmit
