@@ -125,4 +125,70 @@ describe("bitstake-pool-registry", () => {
     );
     expect(min.result).toBeErr(Cl.uint(101));
   });
+
+  // ── Oracle integration helpers ────────────────────────────────────
+
+  it("get-total-stacked returns 0 for fresh pool", () => {
+    const result = simnet.callReadOnlyFn(
+      "bitstake-pool-registry",
+      "get-total-stacked",
+      [Cl.uint(1)],
+      deployer
+    );
+    expect(result.result).toBeOk(Cl.uint(0));
+  });
+
+  it("get-total-stacked returns error for unknown pool", () => {
+    const result = simnet.callReadOnlyFn(
+      "bitstake-pool-registry",
+      "get-total-stacked",
+      [Cl.uint(99)],
+      deployer
+    );
+    expect(result.result).toBeErr(Cl.uint(101));
+  });
+
+  it("get-aggregate-stacked returns 0 when no deposits have been made", () => {
+    const result = simnet.callReadOnlyFn(
+      "bitstake-pool-registry",
+      "get-aggregate-stacked",
+      [],
+      deployer
+    );
+    expect(result.result).toBeOk(Cl.uint(0));
+  });
+
+  it("get-aggregate-stacked reflects deposits after add-to-total", () => {
+    // Simulate 500 STX deposit into pool 1
+    simnet.callPublicFn(
+      "bitstake-pool-registry",
+      "add-to-total",
+      [Cl.uint(1), Cl.uint(500_000_000)],
+      deployer
+    );
+    const result = simnet.callReadOnlyFn(
+      "bitstake-pool-registry",
+      "get-aggregate-stacked",
+      [],
+      deployer
+    );
+    expect(result.result).toBeOk(Cl.uint(500_000_000));
+  });
+
+  it("get-aggregate-stacked sums across multiple pools", () => {
+    simnet.callPublicFn(
+      "bitstake-pool-registry",
+      "add-to-total",
+      [Cl.uint(2), Cl.uint(1_000_000_000)],
+      deployer
+    );
+    const result = simnet.callReadOnlyFn(
+      "bitstake-pool-registry",
+      "get-aggregate-stacked",
+      [],
+      deployer
+    );
+    // pool1: 500 STX, pool2: 1000 STX → 1500 STX total
+    expect(result.result).toBeOk(Cl.uint(1_500_000_000));
+  });
 });

@@ -34,4 +34,29 @@ path = "contracts/bitstake-rewards.clar"
 clarity_version = 2
 epoch = "2.5"
 
+[contracts.bitstake-bstx-oracle]
+path = "contracts/bitstake-bstx-oracle.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-bstx-oracle-twap]
+path = "contracts/bitstake-bstx-oracle-twap.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-oracle-circuit-breaker]
+path = "contracts/bitstake-oracle-circuit-breaker.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-alex-governance]
+path = "contracts/bitstake-alex-governance.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.bitstake-bitflow-pool]
+path = "contracts/bitstake-bitflow-pool.clar"
+clarity_version = 2
+epoch = "2.5"
+
 [[deployment_plan.genesis]]
