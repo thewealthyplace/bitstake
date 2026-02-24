@@ -204,14 +204,57 @@ When you deposit STX, you receive `bSTX` — a SIP-010 compliant liquid staking 
 
 ---
 
+## DeFi Collateral Integration
+
+bSTX tokens are designed to be used as collateral in Stacks DeFi protocols while continuing to earn BTC stacking yield.
+
+### Phase 1 Integrations
+
+| Protocol  | Integration         | Status   |
+|-----------|---------------------|----------|
+| ALEX      | Lending collateral  | Proposed |
+| Bitflow   | bSTX/STX LP pair    | Deployed |
+| Velar     | Synthetic collateral| Planned  |
+
+### bSTX/STX Oracle
+
+The `bitstake-bstx-oracle` contract provides an on-chain exchange rate:
+
+```clarity
+;; Returns bSTX/STX rate at 6 decimal precision
+;; e.g. 1_050_000 = 1.05 STX per bSTX
+(contract-call? .bitstake-bstx-oracle get-spot-rate)
+```
+
+Rate manipulation is mitigated by:
+- **TWAP accumulator** — block-time-weighted 20-checkpoint window
+- **Circuit breaker** — trips on >5% single-observation or >10% rolling deviation
+
+### Bitflow bSTX/STX Pool
+
+```clarity
+;; Add liquidity to bSTX/STX concentrated pool (0.95–1.05 range, 0.05% fee)
+(contract-call? .bitstake-bitflow-pool add-liquidity bstx-amount stx-amount min-bstx min-stx)
+
+;; Swap STX for bSTX
+(contract-call? .bitstake-bitflow-pool swap-stx-for-bstx stx-in min-bstx-out)
+```
+
+See [docs/bstx-defi-collateral.md](docs/bstx-defi-collateral.md) for the full integration guide.
+
+---
+
 ## Roadmap
 
 - [x] Core pool stacking contracts
 - [x] bSTX liquid token
 - [x] BTC reward distribution
+- [x] bSTX/STX oracle with TWAP and circuit breaker
+- [x] ALEX governance proposal for bSTX collateral listing
+- [x] Bitflow bSTX/STX concentrated liquidity pool
 - [ ] Frontend dashboard with live APY
 - [ ] Multi-pool strategy (conservative / aggressive)
-- [ ] DeFi integrations (bSTX as collateral)
+- [ ] ALEX lending collateral (pending governance vote)
 - [ ] Mobile app
 - [ ] Governance token for protocol decisions
 

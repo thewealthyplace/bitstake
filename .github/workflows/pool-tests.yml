@@ -1,4 +1,4 @@
-name: Pool Contract Tests
+name: Contract Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   clarinet-test:
-    name: Clarinet Unit Tests
+    name: Clarinet Unit Tests (pool + oracle + defi)
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
           curl -L https://github.com/hirosystems/clarinet/releases/latest/download/clarinet-linux-x64-glibc.tar.gz \
             | tar -xz -C /usr/local/bin
 
-      - name: Run Clarinet checks
+      - name: Run Clarinet checks (all contracts)
         run: clarinet check
 
       - name: Run contract tests
@@ -30,6 +30,36 @@ jobs:
         with:
           file: coverage.lcov
           fail_ci_if_error: false
+
+  oracle-tests:
+    name: Oracle & DeFi Contract Tests
+    runs-on: ubuntu-latest
+    needs: clarinet-test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Clarinet
+        run: |
+          curl -L https://github.com/hirosystems/clarinet/releases/latest/download/clarinet-linux-x64-glibc.tar.gz \
+            | tar -xz -C /usr/local/bin
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install test dependencies
+        run: npm install @hirosystems/clarinet-sdk @stacks/transactions vitest --save-dev
+
+      - name: Run oracle tests
+        run: npx vitest run tests/bitstake-bstx-oracle.test.ts tests/bitstake-bstx-oracle-twap.test.ts tests/bitstake-oracle-circuit-breaker.test.ts --reporter=verbose
+
+      - name: Run governance tests
+        run: npx vitest run tests/bitstake-alex-governance.test.ts --reporter=verbose
+
+      - name: Run Bitflow pool tests
+        run: npx vitest run tests/bitstake-bitflow-pool.test.ts --reporter=verbose
 
   typescript-test:
     name: TypeScript Tests
