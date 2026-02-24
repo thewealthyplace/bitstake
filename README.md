@@ -249,10 +249,10 @@ See [docs/bstx-defi-collateral.md](docs/bstx-defi-collateral.md) for the full in
 - [x] Core pool stacking contracts
 - [x] bSTX liquid token
 - [x] BTC reward distribution
-- [x] bSTX/STX oracle with TWAP and circuit breaker
-- [x] ALEX governance proposal for bSTX collateral listing
-- [x] Bitflow bSTX/STX concentrated liquidity pool
-- [ ] Frontend dashboard with live APY
+- [x] Frontend dashboard with live APY, cycle countdown, and historical charts
+- [x] 52-cycle APY chart and cycle calendar with unlock highlights
+- [x] Wallet earnings view with CSV export
+- [x] Live SSE block feed (no page reload)
 - [ ] Multi-pool strategy (conservative / aggressive)
 - [ ] ALEX lending collateral (pending governance vote)
 - [ ] Mobile app
