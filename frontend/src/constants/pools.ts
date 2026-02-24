@@ -5,12 +5,23 @@ export const STACKS_NETWORK = new STACKS_TESTNET();
 export const CONTRACT_DEPLOYER = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM";
 
 export const CONTRACTS = {
-  POOL_REGISTRY: `${CONTRACT_DEPLOYER}.bitstake-pool-registry`,
-  POOL_DEPOSITS:  `${CONTRACT_DEPLOYER}.bitstake-pool-deposits`,
-  LBSTX_TOKEN:   `${CONTRACT_DEPLOYER}.bitstake-lbstx`,
-  BBSTX_TOKEN:   `${CONTRACT_DEPLOYER}.bitstake-bbstx`,
-  MBSTX_TOKEN:   `${CONTRACT_DEPLOYER}.bitstake-mbstx`,
-  REWARDS:       `${CONTRACT_DEPLOYER}.bitstake-rewards`,
+  POOL_REGISTRY:          `${CONTRACT_DEPLOYER}.bitstake-pool-registry`,
+  POOL_DEPOSITS:          `${CONTRACT_DEPLOYER}.bitstake-pool-deposits`,
+  LBSTX_TOKEN:            `${CONTRACT_DEPLOYER}.bitstake-lbstx`,
+  BBSTX_TOKEN:            `${CONTRACT_DEPLOYER}.bitstake-bbstx`,
+  MBSTX_TOKEN:            `${CONTRACT_DEPLOYER}.bitstake-mbstx`,
+  REWARDS:                `${CONTRACT_DEPLOYER}.bitstake-rewards`,
+  BSTX_ORACLE:            `${CONTRACT_DEPLOYER}.bitstake-bstx-oracle`,
+  BSTX_ORACLE_TWAP:       `${CONTRACT_DEPLOYER}.bitstake-bstx-oracle-twap`,
+  ORACLE_CIRCUIT_BREAKER: `${CONTRACT_DEPLOYER}.bitstake-oracle-circuit-breaker`,
+};
+
+// Dashboard API endpoints
+export const API_ENDPOINTS = {
+  POOL_STATS:      "/api/v1/pool/stats",
+  POOL_HISTORY:    "/api/v1/pool/history",
+  WALLET_EARNINGS: (address: string) => `/api/v1/wallet/${encodeURIComponent(address)}/earnings`,
+  LIVE_EVENTS:     "/api/v1/ws",
 };
 
 export interface PoolTier {
