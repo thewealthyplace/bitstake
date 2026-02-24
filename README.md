@@ -209,7 +209,10 @@ When you deposit STX, you receive `bSTX` — a SIP-010 compliant liquid staking 
 - [x] Core pool stacking contracts
 - [x] bSTX liquid token
 - [x] BTC reward distribution
-- [ ] Frontend dashboard with live APY
+- [x] Frontend dashboard with live APY, cycle countdown, and historical charts
+- [x] 52-cycle APY chart and cycle calendar with unlock highlights
+- [x] Wallet earnings view with CSV export
+- [x] Live SSE block feed (no page reload)
 - [ ] Multi-pool strategy (conservative / aggressive)
 - [ ] DeFi integrations (bSTX as collateral)
 - [ ] Mobile app
