@@ -97,6 +97,26 @@
   )
 )
 
+;; Returns total-stacked for a single pool — consumed by the bSTX oracle
+(define-read-only (get-total-stacked (pool-id uint))
+  (match (map-get? pools pool-id)
+    pool (ok (get total-stacked pool))
+    ERR-POOL-NOT-FOUND
+  )
+)
+
+;; Aggregate total STX stacked across all three default pools (1, 2, 3).
+;; Used by the oracle to compute the global bSTX exchange rate.
+(define-read-only (get-aggregate-stacked)
+  (let (
+    (p1 (default-to u0 (match (map-get? pools u1) p (some (get total-stacked p)) none)))
+    (p2 (default-to u0 (match (map-get? pools u2) p (some (get total-stacked p)) none)))
+    (p3 (default-to u0 (match (map-get? pools u3) p (some (get total-stacked p)) none)))
+  )
+    (ok (+ p1 (+ p2 p3)))
+  )
+)
+
 ;; ── Initialise Default Pools ──────────────────────────────────────────
 
 (begin
